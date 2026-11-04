@@ -1,0 +1,11 @@
+# Private audit material must remain outside the repository tree.
+/support/
+/DENMARK-OVERLAPS.md
+/DENMARK-GROUP-VERSION.md
+/ROSTER-ALIASES.csv
+/final-alias-crosswalk.*
+/pera-review-*
+/final-validation-summary.json
+/client-privacy-audit*.json
+/runtime-privacy-audit*.json
+/PUBLIC-ASSETS.md
