@@ -230,3 +230,241 @@ body {
 .filters.spain-filtered {
   grid-template-columns: minmax(200px, 1fr);
 }
+
+.match-header.has-live-scoreboard {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #784250;
+  border-radius: 10px;
+  background: linear-gradient(110deg, #261d27f5, #171820f5);
+  box-shadow: 0 8px 26px #0005;
+}
+
+.match-header.has-live-scoreboard h3 {
+  display: none;
+}
+
+.match-header.has-live-scoreboard #matchClock {
+  display: none;
+}
+
+.match-header.has-live-scoreboard > div:first-child {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.live-scoreboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(8px, 2vw, 22px);
+  width: 100%;
+}
+
+.score-team {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+  border-top: 2px solid var(--team-accent, var(--gold));
+  padding-top: 5px;
+}
+
+.score-home {
+  text-align: right;
+}
+
+.score-away {
+  text-align: left;
+}
+
+.score-team span,
+.score-state {
+  color: var(--muted);
+  font: 800 8px var(--mono);
+  letter-spacing: .12em;
+}
+
+.score-team strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: clamp(10px, 1.8vw, 13px);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-center {
+  display: grid;
+  justify-items: center;
+  min-width: 80px;
+  line-height: 1.05;
+}
+
+.score-clock {
+  color: var(--gold);
+  font: 800 11px var(--mono);
+}
+
+.score-center > strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #fff;
+  font: 900 clamp(21px, 4vw, 31px) var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-center > strong b {
+  color: #998e92;
+  font-size: .72em;
+}
+
+.score-state {
+  color: #ed8278;
+  font-size: 7px;
+}
+
+.match-action-flash {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: min(82%, 460px);
+  border: 1px solid color-mix(in srgb, var(--action-accent, var(--gold)) 70%, white);
+  border-radius: 9px;
+  padding: 9px 13px;
+  background: #17151ceb;
+  color: var(--ink);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -10px);
+  box-shadow: 0 8px 25px #0007;
+}
+
+.match-action-flash.is-visible {
+  animation: match-action-in 2.2s ease both;
+}
+
+.match-action-flash strong {
+  color: var(--action-accent, var(--gold));
+  font: 900 11px var(--mono);
+  letter-spacing: .14em;
+}
+
+.match-action-flash span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.action-corner {
+  border-left: 4px solid var(--action-accent, var(--gold));
+}
+
+.action-foul {
+  border-bottom: 3px solid #f08072;
+}
+
+.action-substitution {
+  border-top: 3px solid #91c9ef;
+}
+
+.log-foul strong {
+  color: #f19a85;
+}
+
+.log-corner strong,
+.log-substitution strong {
+  color: #9dcdf0;
+}
+
+.log-injury strong,
+.log-card strong {
+  color: #ff9a86;
+}
+
+.log-throwin strong,
+.log-goalKick strong,
+.log-offside strong {
+  color: #e6d18b;
+}
+
+.action-injury {
+  border-bottom: 3px solid #f08072;
+}
+
+.action-card {
+  border-top: 3px solid #f1c84d;
+}
+
+.action-throwin,
+.action-goalKick,
+.action-offside {
+  border-left: 4px solid #e6d18b;
+}
+
+.live-substitution {
+  border-color: #53738b;
+  background: linear-gradient(110deg, #1d2b35, #202631);
+}
+
+.live-substitution > .secondary-button {
+  margin-top: 9px;
+}
+
+.pitch-player.substitution-enter {
+  animation: player-substitution-in 900ms ease-out both;
+}
+
+@keyframes match-action-in {
+  0% { opacity: 0; transform: translate(-50%, -10px) scale(.97); }
+  12%, 78% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -3px) scale(1.01); }
+}
+
+@keyframes player-substitution-in {
+  0% { opacity: .25; filter: drop-shadow(0 0 0 transparent); }
+  55% { opacity: 1; filter: drop-shadow(0 0 12px #9dcdf0); }
+  100% { opacity: 1; filter: none; }
+}
+
+@media (max-width: 560px) {
+  .match-header.has-live-scoreboard {
+    position: static;
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .live-scoreboard {
+    min-width: 100%;
+    gap: 7px;
+  }
+
+  .score-center {
+    min-width: 62px;
+  }
+
+  .score-team strong {
+    max-width: 28vw;
+  }
+
+  .match-action-flash {
+    top: 8px;
+    padding: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .match-action-flash.is-visible {
+    animation-duration: 1ms;
+  }
+
+  .pitch-player.substitution-enter {
+    animation-duration: 1ms;
+  }
+}
