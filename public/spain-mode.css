@@ -223,12 +223,16 @@ body {
   }
 }
 
-.filters label[hidden] {
-  display: none;
+.league-block[data-tier="2"] .league-chip {
+  border-color: #9a5d34;
+  background: linear-gradient(100deg, #432c21, #342a28);
+  color: #ffc48e;
 }
 
-.filters.spain-filtered {
-  grid-template-columns: minmax(200px, 1fr);
+.league-block[data-tier="3"] .league-chip {
+  border-color: #425f91;
+  background: linear-gradient(100deg, #202f4d, #292a3c);
+  color: #b6d2ff;
 }
 
 .match-header.has-live-scoreboard {
