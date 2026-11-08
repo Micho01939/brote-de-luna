@@ -1,6 +1,6 @@
 # Cancha Libre
 
-Cancha Libre es un mánager de fútbol original para navegador, con clubes y jugadores ficticios.
+Cancha Libre es un mánager de fútbol para navegador. El catálogo jugable contiene únicamente los 20 clubes de LaLiga EA Sports 2026/27, con nombres, dorsales, posiciones y edades de las plantillas oficiales. Los escudos son diseños geométricos originales; los GRL y atributos son estimaciones del juego y no valoraciones oficiales.
 
 ## Probar localmente
 
@@ -8,12 +8,8 @@ Desde la raíz del proyecto, ejecuta `python3 -m http.server 8000 --directory pu
 
 ## Qué incluye
 
-Gestión de plantilla y mercado; temporadas con jugadores ficticios y atributos tipo GRL/OVR; partidos 2D con tácticas, sustituciones, lesiones y recuperación; guardado local y respaldo JSON. El comentario de voz es sintético y opcional: se puede silenciar y mantiene subtítulos en pantalla.
+Gestión de plantilla y mercado; plantillas de hasta 25 jugadores de LaLiga con nombres y dorsales oficiales; GRL de club y jugador; atributos de ataque, velocidad, pase, regate, defensa, entrada, resistencia, fuerza, tiro, portería, anticipación y visión; partidos 2D con jugadores circulares identificados por dorsal y posición, IA táctica que ajusta presión, coberturas, líneas defensivas y desmarques a atributos y enfoque; sustituciones, lesiones y recuperación; celebración diferenciada por local/visitante con los colores del equipo, marcador y goleador; guardado local y respaldo JSON. El comentario de voz es sintético y opcional: se puede silenciar y mantiene subtítulos en pantalla.
 
-## Datos del universo
-
-El catálogo reúne **721 participaciones en 44 divisiones/grupos, no 721 clubes únicos**: 471 plazas base + 88 de cuatro grupos ingleses Step 3 + 162 participaciones danesas. En Dinamarca, el ajuste es 118 − 16 + 60 = 162 participaciones en 16 grupos. Son inscripciones por competición, no un conteo de clubes matrices únicos. Los nombres de juego son ficticios; las fuentes públicas documentan cobertura por división, no correspondencias individuales entre aliases y clubes.
-
-Consulta [SOURCES.md](SOURCES.md) para las fuentes organizadas por división. No están incluidas todas las divisiones; Baden-Württemberg tiene una lista parcial de 6 de 18 participantes, por lo que esa carrera se juega con amistosos y sin tabla.
+La temporada se basa en los participantes de LaLiga EA Sports 2026/27. Consulta [SOURCES.md](SOURCES.md) para las fuentes de participantes y cobertura. Los escudos no reproducen insignias oficiales y las valoraciones de club son estimaciones originales del juego.
 
 El progreso de partida se guarda en este navegador; borrar los datos del sitio elimina el progreso. Puedes exportar un respaldo JSON.

@@ -1,0 +1,232 @@
+:root {
+  --bg: #15151b;
+  --panel: #1e1d25;
+  --panel2: #292730;
+  --line: #41404b;
+  --ink: #f8f6f2;
+  --muted: #c5c1c6;
+  --quiet: #918c97;
+  --lime: #f05a48;
+  --gold: #ffd166;
+  --red: #f05a48;
+  --blue: #aab8f0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 90% -12%, #532333 0, transparent 36%),
+    radial-gradient(ellipse at 4% 18%, #282545 0, transparent 32%),
+    var(--bg);
+}
+
+.brand-icon {
+  border-color: #6b3543;
+  background: linear-gradient(145deg, #432638, #28243a);
+  color: var(--gold);
+}
+
+.free-dot {
+  background: var(--gold);
+  box-shadow: 0 0 8px #f0bf5788;
+}
+
+.league-chip,
+.profile-badge,
+.coverage-pill {
+  border-color: #784250;
+  background: linear-gradient(100deg, #402832, #302a3d);
+  color: #ffd789;
+}
+
+.club-card.selected {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px #ffd16645, 0 0 22px #ef5c4820;
+}
+
+.club-card {
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.club-card:hover {
+  border-color: var(--club-accent, var(--red));
+  transform: translateY(-2px);
+}
+
+.club-rating,
+.club-overall {
+  color: var(--gold);
+  font: 800 10px var(--mono);
+}
+
+.club-rating {
+  position: absolute;
+  top: 24px;
+  right: 8px;
+  border: 1px solid #735b36;
+  border-radius: 5px;
+  background: #211d1edc;
+  padding: 3px 5px;
+}
+
+.club-overall {
+  display: inline-flex;
+  margin: 3px 0 5px;
+  margin-left: 6px;
+  border: 1px solid #735b36;
+  border-radius: 5px;
+  background: #2e2722;
+  padding: 4px 7px;
+}
+
+.primary-button {
+  background: linear-gradient(110deg, #ee5548, #e74b69);
+  color: #fff8f2;
+}
+
+.primary-button:hover {
+  background: linear-gradient(110deg, #ff6a58, #f35b78);
+}
+
+.view-tab.active,
+.career-tab.active,
+.summary-box strong,
+.player-ovr,
+.stat-line b,
+.log-item strong {
+  color: var(--gold);
+}
+
+.view-tab.active:after,
+.career-tab.active {
+  border-color: var(--gold);
+}
+
+.stat-track i {
+  background: linear-gradient(90deg, #e94955, #f17161, var(--gold));
+}
+
+.pitch-wrap {
+  position: relative;
+}
+
+.match-score {
+  display: inline-block;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.match-score.goal-pulse {
+  animation: goal-score-pulse 720ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.goal-celebration {
+  position: absolute;
+  z-index: 3;
+  inset: 12% 10%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--goal-accent, var(--gold)) 72%, white);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at center, color-mix(in srgb, var(--goal-accent, var(--gold)) 26%, #211d28), #15151bf2 72%);
+  color: var(--ink);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.88);
+  box-shadow: 0 16px 70px color-mix(in srgb, var(--goal-accent, var(--gold)) 22%, transparent);
+}
+
+.goal-celebration.is-visible {
+  animation: goal-celebration 2.8s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.goal-celebration.goal-home.is-visible {
+  animation-name: goal-home-celebration;
+}
+
+.goal-celebration.goal-away.is-visible {
+  animation-name: goal-away-celebration;
+}
+
+.goal-team-label {
+  border-left: 3px solid var(--goal-accent, var(--gold));
+  padding: 4px 10px;
+  background: #ffffff10;
+  color: #f8f6f2;
+  font: 800 10px var(--mono);
+  letter-spacing: .12em;
+}
+
+.goal-celebration strong {
+  color: var(--goal-accent, var(--gold));
+  font-size: clamp(42px, 10vw, 88px);
+  font-weight: 1000;
+  letter-spacing: -.08em;
+  line-height: .95;
+  text-shadow: 0 5px 35px #f05a4888;
+}
+
+.goal-celebration span {
+  max-width: 90%;
+  font-weight: 800;
+}
+
+.goal-celebration b {
+  border: 1px solid color-mix(in srgb, var(--goal-accent, var(--gold)) 65%, white);
+  border-radius: 999px;
+  background: #ffffff12;
+  padding: 5px 14px;
+  color: var(--gold);
+  font: 800 17px var(--mono);
+}
+
+@keyframes goal-score-pulse {
+  0%, 100% { transform: scale(1); text-shadow: none; }
+  40% { transform: scale(1.38); text-shadow: 0 0 24px #ffd166a8; }
+}
+
+@keyframes goal-celebration {
+  0% { opacity: 0; transform: scale(.88); }
+  12%, 78% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes goal-home-celebration {
+  0% { opacity: 0; transform: translateX(-8%) scale(.9); }
+  12%, 78% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(2%) scale(1.03); }
+}
+
+@keyframes goal-away-celebration {
+  0% { opacity: 0; transform: translateX(8%) scale(.9); }
+  12%, 78% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(-2%) scale(1.03); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .club-card,
+  .match-score.goal-pulse,
+  .goal-celebration.is-visible {
+    animation-duration: 1ms;
+    transition-duration: 1ms;
+  }
+}
+
+@media (max-width: 560px) {
+  .club-rating {
+    top: 21px;
+    right: 6px;
+    font-size: 8px;
+  }
+}
+
+.filters label[hidden] {
+  display: none;
+}
+
+.filters.spain-filtered {
+  grid-template-columns: minmax(200px, 1fr);
+}

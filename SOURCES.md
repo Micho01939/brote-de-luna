@@ -1,6 +1,6 @@
 # Fuentes de cobertura y listas de participantes — Cancha Libre
 
-Temporada 2026/27: **721 participaciones en 44 divisiones/grupos**. Este archivo documenta evidencia por división; no incluye un roster de aliases ni correspondencias entre aliases y clubes ficticios. Algunas crónicas de partidos mencionan clubes reales como evidencia puntual; eso no identifica aliases ni establece equivalencias.
+Temporada 2026/27: este inventario de fuentes documenta **721 participaciones en 44 divisiones/grupos**. El catálogo jugable se limita a los 20 participantes de LaLiga EA Sports 2026/27 y usa escudos geométricos originales. Las demás listas de este inventario respaldan la cobertura documentada, no equipos disponibles en el juego. Algunas crónicas mencionan clubes reales como evidencia puntual y no establecen equivalencias con clubes ficticios.
 
 ## Criterio aplicado
 
@@ -24,6 +24,31 @@ Los rótulos de enlace son genéricos. Se conservan enlaces originales solo cuan
 - **Fuentes de participantes / calendario:**
 - [Fuente oficial 1](https://www.laliga.com/laliga-easports/clubes)
 - [Fuente oficial 2](https://www.laliga.com/laliga-easports/calendario)
+
+#### Plantillas de jugadores usadas en el juego
+
+Datos consultados el **8 de noviembre de 2026** en las páginas oficiales de plantilla de LALIGA para la temporada 2026/27. Se usan nombres, dorsales, posiciones y fecha de nacimiento para calcular edad; el juego conserva hasta 25 jugadores por equipo y excluye menores de 16. Los GRL y atributos son estimaciones propias, no datos oficiales.
+
+- [Real Madrid](https://www.laliga.com/clubes/real-madrid/plantilla)
+- [Atlético de Madrid](https://www.laliga.com/clubes/atletico-de-madrid/plantilla)
+- [FC Barcelona](https://www.laliga.com/clubes/fc-barcelona/plantilla)
+- [CA Osasuna](https://www.laliga.com/clubes/c-a-osasuna/plantilla)
+- [RC Celta](https://www.laliga.com/clubes/rc-celta/plantilla)
+- [Deportivo Alavés](https://www.laliga.com/clubes/d-alaves/plantilla)
+- [Elche CF](https://www.laliga.com/clubes/elche-c-f/plantilla)
+- [Sevilla FC](https://www.laliga.com/clubes/sevilla-fc/plantilla)
+- [Real Betis](https://www.laliga.com/clubes/real-betis/plantilla)
+- [Getafe CF](https://www.laliga.com/clubes/getafe-cf/plantilla)
+- [Valencia CF](https://www.laliga.com/clubes/valencia-cf/plantilla)
+- [Málaga CF](https://www.laliga.com/clubes/malaga-cf/plantilla)
+- [Racing de Santander](https://www.laliga.com/clubes/r-racing-club/plantilla)
+- [Rayo Vallecano](https://www.laliga.com/clubes/rayo-vallecano/plantilla)
+- [Deportivo de La Coruña](https://www.laliga.com/clubes/rc-deportivo/plantilla)
+- [RCD Espanyol](https://www.laliga.com/clubes/rcd-espanyol/plantilla)
+- [Levante UD](https://www.laliga.com/clubes/levante-ud/plantilla)
+- [Villarreal CF](https://www.laliga.com/clubes/villarreal-cf/plantilla)
+- [Athletic Club](https://www.laliga.com/clubes/athletic-club/plantilla)
+- [Real Sociedad](https://www.laliga.com/clubes/real-sociedad/plantilla)
 
 ### Segunda División — España · nivel 2
 
