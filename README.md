@@ -14,4 +14,6 @@ Gestión de plantilla y mercado; ligas jugables de Primera, Segunda y Primera Fe
 
 La temporada se basa en los participantes de las competiciones españolas 2026/27. Consulta [SOURCES.md](SOURCES.md) para las fuentes oficiales de participantes. Los escudos no reproducen insignias oficiales y las valoraciones de club son estimaciones originales del juego.
 
+En **Fuentes y escudos** puedes importar PNG/SVG para cualquier club o crear un diseño con el editor vectorial de colores, forma, patrón, motivo, tipografía y borde. Los archivos personalizados se guardan en IndexedDB de este navegador y no se incluyen en el respaldo de carreras. Para incluir un asset en el despliegue, colócalo en `public/assets/logos/<ID-del-club>.png` o `.svg`; el juego prueba ambos formatos por ID. Revisa las licencias y atribuciones de cada recurso externo antes de reutilizarlo.
+
 El progreso de partida se guarda en este navegador; borrar los datos del sitio elimina el progreso. Puedes exportar un respaldo JSON.
