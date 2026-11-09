@@ -58,8 +58,8 @@ function validMatch(m,c){
 }
 function validCareer(c){
  const careerRequired=['version','id','clubId','competitionId','createdAt','updatedAt','matchday','calendarDay','formation','tactic','budget','salaryBudget','squad','market','injuries','history','standings','activeMatch','friendlyMode','tab','voice','gameSpeed','nextMatchSeq'];
- if(!hasKeys(c,careerRequired,['acquiredMarketIds','processedMatchIds'])||c.version!==3||!validId(c.id)||!validId(c.clubId)||!clubById.has(c.clubId)||!validId(c.competitionId)||!compById.has(c.competitionId)||clubById.get(c.clubId).competitionId!==c.competitionId)return false;
- if(!validTimestamp(c.createdAt)||!validTimestamp(c.updatedAt)||!whole(c.matchday,0,10000)||!whole(c.calendarDay,1,1000000)||!formations[c.formation]||!['balanced','attack','defense'].includes(c.tactic)||!inRange(c.budget,0,10000000)||!inRange(c.salaryBudget,0,10000000)||typeof c.friendlyMode!=='boolean'||typeof c.voice!=='boolean'||![1,2,4].includes(c.gameSpeed)||!['squad','match','market','table'].includes(c.tab)||!whole(c.nextMatchSeq,0,1e6))return false;
+ if(!hasKeys(c,careerRequired,['acquiredMarketIds','processedMatchIds','activityData'])||c.version!==3||!validId(c.id)||!validId(c.clubId)||!clubById.has(c.clubId)||!validId(c.competitionId)||!compById.has(c.competitionId)||clubById.get(c.clubId).competitionId!==c.competitionId)return false;
+ if(!validTimestamp(c.createdAt)||!validTimestamp(c.updatedAt)||!whole(c.matchday,0,10000)||!whole(c.calendarDay,1,1000000)||!formations[c.formation]||!['balanced','attack','defense'].includes(c.tactic)||!inRange(c.budget,0,10000000)||!inRange(c.salaryBudget,0,10000000)||typeof c.friendlyMode!=='boolean'||typeof c.voice!=='boolean'||![1,2,4].includes(c.gameSpeed)||!['squad','match','market','table','activities'].includes(c.tab)||!whole(c.nextMatchSeq,0,1e6))return false;
  if(!Array.isArray(c.squad)||c.squad.length<11||c.squad.length>25||!c.squad.every(validPlayer)||!Array.isArray(c.market)||c.market.length>25||!c.market.every(validPlayer)||!Array.isArray(c.history)||c.history.length>40||!c.history.every(validHistoryItem))return false;
  const marketIds=c.market.map(p=>p.id);if(!uniquePlayerIds(c.squad)||!uniquePlayerIds(c.market)||new Set([...c.squad.map(p=>p.id),...marketIds]).size!==c.squad.length+marketIds.length)return false;
  const squadOrigins=c.squad.map(playerOrigin),marketOrigins=c.market.map(playerOrigin);if(!uniqueStrings(squadOrigins)||!uniqueStrings(marketOrigins)||marketOrigins.some(id=>squadOrigins.includes(id)))return false;
@@ -69,6 +69,7 @@ function validCareer(c){
  if(!isRecord(c.injuries)||Object.keys(c.injuries).length>25||Object.entries(c.injuries).some(([id,x])=>!c.squad.some(p=>p.id===id)||!onlyKeys(x,['days','total','reason'])||!whole(x.days,1,60)||!whole(x.total,x.days,1,60)||!validText(x.reason,80)))return false;
  if(!isRecord(c.standings)||Object.keys(c.standings).length>30||Object.entries(c.standings).some(([id,r])=>!clubById.has(id)||clubById.get(id).competitionId!==c.competitionId||!onlyKeys(r,['played','w','d','l','gf','ga','pts'])||Object.keys(r).length!==7||Object.values(r).some(n=>!whole(n,0,1e6))))return false;
  if(c.history.some(x=>clubById.get(x.opponentId).competitionId!==c.competitionId||clubById.get(x.opponentId).name!==x.opponentName))return false;
+ if(c.activityData!==undefined&&!validActivityData(c.activityData))return false;
  if(c.activeMatch!==null&&!validMatch(c.activeMatch,c))return false;
  return true;
 }
@@ -409,4 +410,216 @@ $('careerRoot').addEventListener('keydown',e=>{if(e.key==='Escape'&&career?.acti
 function pauseForBackground(){if(career?.activeMatch?.running){career.activeMatch.running=false;stopTimer();persist(true)}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForBackground()});window.addEventListener('pagehide',()=>{if(career){if(career.activeMatch)career.activeMatch.running=false;stopTimer();persist(true)}});
 $('statParticipations').textContent=D.clubs.length.toLocaleString('es-MX');$('statComps').textContent=D.competitions.length.toLocaleString('es-MX');countryOptions();leagueOptions();renderClubList();renderClubPanel();updateResumeBanner();renderCareer();renderEvidence();
+
+function validActivityData(a){
+ const keys=['morale','boardConfidence','fanApproval','medicalLevel','nationalRole','nationalOfferResolved','dismissed','durationMinutes','activeMatchDuration','lastPressMatchday','lastSponsorMatchday','lastInterviewMatchday','lastBoardReviewMatchday','log'];
+ return hasKeys(a,keys)&&whole(a.morale,0,100)&&whole(a.boardConfidence,0,100)&&whole(a.fanApproval,0,100)&&whole(a.medicalLevel,1,3)&&typeof a.nationalRole==='boolean'&&typeof a.nationalOfferResolved==='boolean'&&typeof a.dismissed==='boolean'&&[10,20,45,90].includes(a.durationMinutes)&&[10,20,45,90].includes(a.activeMatchDuration)&&Number.isInteger(a.lastPressMatchday)&&a.lastPressMatchday>=-1&&a.lastPressMatchday<=10000&&Number.isInteger(a.lastSponsorMatchday)&&a.lastSponsorMatchday>=-1&&a.lastSponsorMatchday<=1000000&&Number.isInteger(a.lastInterviewMatchday)&&a.lastInterviewMatchday>=-3&&a.lastInterviewMatchday<=1000000&&whole(a.lastBoardReviewMatchday,0,10000)&&Array.isArray(a.log)&&a.log.length<=12&&a.log.every(x=>hasKeys(x,['day','title','detail'])&&whole(x.day,1,1000000)&&validText(x.title,80)&&validText(x.detail,240));
+}
+function newActivityData(){return{morale:65,boardConfidence:65,fanApproval:55,medicalLevel:1,nationalRole:false,nationalOfferResolved:false,dismissed:false,durationMinutes:45,activeMatchDuration:45,lastPressMatchday:-1,lastSponsorMatchday:-1,lastInterviewMatchday:-3,lastBoardReviewMatchday:0,log:[]}}
+function activityData(){if(!career)return newActivityData();if(!validActivityData(career.activityData))career.activityData=newActivityData();return career.activityData}
+function recordCareerActivity(title,detail){const a=activityData();a.log.unshift({day:career.calendarDay,title,detail});a.log=a.log.slice(0,12)}
+function matchDuration(m=career?.activeMatch){const a=activityData();return m&&m===career?.activeMatch?a.activeMatchDuration:a.durationMinutes}
+function activityMatchPoints(items){return items.reduce((points,item)=>points+(item.userGoals>item.oppGoals?3:item.userGoals===item.oppGoals?1:0),0)}
+function careerActivityCard(title,description,action,label,disabled=false){return `<article class="activity-card"><div><h4>${h(title)}</h4><p>${h(description)}</p></div><button class="small-button" type="button" data-action="${h(action)}"${disabled?' disabled':''}>${h(label)}</button></article>`}
+function renderCareerActivities(){
+ const a=activityData(),match=career.activeMatch,matchRunning=!!(match&&match.status!=='FT'),nextReview=((Math.floor(career.matchday/5)+1)*5),segmentStart=Math.floor(career.matchday/5)*5,segment=career.history.filter(x=>typeof x.matchday==='number'&&x.matchday>segmentStart),points=activityMatchPoints(segment),nextNation=career.matchday>=5&&!a.nationalRole&&!a.nationalOfferResolved;
+ const pressDisabled=matchRunning||a.lastPressMatchday===career.matchday||a.dismissed;
+ const sponsorshipDisabled=matchRunning||a.lastSponsorMatchday===career.matchday||a.dismissed;
+ const interviewDisabled=matchRunning||career.matchday-a.lastInterviewMatchday<3||a.dismissed;
+ const medicalCost=a.medicalLevel===1?160000:300000;
+ return `<div class="section-heading"><div><div class="eyebrow">Vida del cuerpo técnico</div><h3>Actividades de carrera</h3></div><span class="coverage-pill">${a.nationalRole?'Doble cargo activo':'Agenda del mánager'}</span></div>
+ ${a.dismissed?'<div class="injury-alert"><strong>La directiva rescindió tu contrato.</strong> Esta carrera terminó. Puedes volver a clubes para iniciar un nuevo desafío.</div><button class="primary-button" type="button" data-action="open-clubs">Elegir otro club</button>':''}
+ <div class="career-summary"><div class="summary-box"><strong>${h(a.morale)}</strong><span>Ánimo de plantilla / 100</span></div><div class="summary-box"><strong>${h(a.boardConfidence)}</strong><span>Confianza directiva / 100</span></div><div class="summary-box"><strong>${h(a.fanApproval)}</strong><span>Aprobación de afición / 100</span></div><div class="summary-box"><strong>${h(a.medicalLevel)}/3</strong><span>Servicio médico</span></div><div class="summary-box"><strong>${a.nationalRole?'Sí':'No'}</strong><span>Segundo cargo</span></div></div>
+ <div class="activity-grid">
+ <section class="activity-panel"><h3>Rueda de prensa</h3><p class="career-intro">Las declaraciones influyen en la moral y la confianza. Solo puedes hacer una antes de cada jornada.</p><div class="activity-actions">${careerActivityCard('Respaldar al vestuario','Protege la moral del equipo y gana confianza con el grupo.','press-support','Respaldar',pressDisabled)}${careerActivityCard('Exigir resultados','Aumenta la presión competitiva de la directiva; el vestuario puede resentirlo.','press-demand','Exigir',pressDisabled)}${careerActivityCard('Quitar presión','Prioriza la tranquilidad del equipo, aunque la directiva espere más ambición.','press-calm','Calmar',pressDisabled)}</div></section>
+ <section class="activity-panel"><h3>Directiva y objetivos</h3><p class="career-intro">Objetivo: sumar al menos 7 puntos por cada bloque de cinco jornadas oficiales. El corte ocurre al cerrar cada bloque; incumplirlo reduce la confianza y puede terminar en despido.</p><div class="board-goal"><strong>${h(points)} / 7 puntos</strong><span>Bloque actual · jornada ${h(career.matchday+1)} de 5 · próxima revisión: jornada ${h(nextReview)}</span></div>${a.lastBoardReviewMatchday?`<p class="profile-sub">Última revisión tras la jornada ${h(a.lastBoardReviewMatchday)}.</p>`:'<p class="profile-sub">La primera revisión se realiza tras cinco partidos oficiales.</p>'}</section>
+ <section class="activity-panel"><h3>Ofertas y medios</h3><p class="career-intro">Las oportunidades son eventos ficticios de carrera; sus efectos se reflejan en presupuesto y moral.</p><div class="activity-actions">${careerActivityCard('Patrocinio personal','Aceptar aporta 150.000 CR y resta 2 puntos de moral. Una oferta por jornada.','sponsor','Aceptar patrocinio',sponsorshipDisabled)}${careerActivityCard('Entrevista exclusiva','Aporta 80.000 CR; atender a los medios resta 5 puntos de moral. Disponible cada tres jornadas.','interview','Dar entrevista',interviewDisabled)}${nextNation?`${careerActivityCard('Oferta de selección nacional','Aceptar el doble cargo aporta 2 puntos de confianza y aumenta la carga de trabajo.','national-accept','Aceptar doble cargo')}${careerActivityCard('Rechazar oferta','Conserva el foco en el club. La oferta no volverá a aparecer en esta carrera.','national-decline','Rechazar')}`:''}</div>${a.nationalRole?'<p class="profile-sub">Diriges el club y una selección nacional. La carga adicional acelera el desgaste durante los partidos.</p>':''}</section>
+ <section class="activity-panel"><h3>Servicio médico</h3><p class="career-intro">Contrata especialistas para reducir lesiones activas y acelerar la recuperación futura.</p><div class="activity-actions">${careerActivityCard(a.medicalLevel>=3?'Nivel máximo alcanzado':`Mejorar al nivel ${a.medicalLevel+1}`,`Coste: ${formatMoney(medicalCost)}. Reduce las lesiones activas y mejora la recuperación.`, 'hire-medical',a.medicalLevel>=3?'Completo':`Contratar · ${formatMoney(medicalCost)}`,a.medicalLevel>=3||career.budget<medicalCost||a.dismissed)}</div></section>
+ </div>
+ <section class="activity-panel duration-panel"><div><h3>Duración de partido</h3><p class="career-intro">Elige entre 10 y 90 minutos simulados. A mayor velocidad, menor duración real; el descanso se adapta a la mitad del encuentro.</p></div><label>Minutos simulados<select class="career-select" data-field="duration" ${matchRunning||a.dismissed?'disabled':''}>${[10,20,45,90].map(minutes=>`<option value="${minutes}"${a.durationMinutes===minutes?' selected':''}>${minutes} minutos</option>`).join('')}</select></label></section>
+ <section class="activity-panel"><h3>Registro de actividades</h3>${a.log.length?`<div class="activity-log">${a.log.map(x=>`<div class="activity-log-row"><span>Día ${h(x.day)} · ${h(x.title)}</span><p>${h(x.detail)}</p></div>`).join('')}</div>`:'<p class="career-intro">Las ruedas de prensa, revisiones y eventos aparecerán aquí.</p>'}</section>`;
+}
+const originalNewCareer=newCareer;
+newCareer=function(club){
+ const existing=Object.values(saveState.careers).find(x=>x.clubId===club.id);
+ if(existing?.activityData?.dismissed){delete saveState.careers[existing.id];if(saveState.activeId===existing.id)saveState.activeId=null;career=null}
+ originalNewCareer(club);
+};
+const originalRenderClubPanel=renderClubPanel;
+renderClubPanel=function(){
+ originalRenderClubPanel();
+ const saved=selectedClub&&Object.values(saveState.careers).find(x=>x.clubId===selectedClub.id);
+ if(saved?.activityData?.dismissed){
+  const button=$('clubPanelContent')?.querySelector('[data-action="continue-specific"]');
+  if(button){button.dataset.action='start-career';button.removeAttribute('data-career');button.textContent='Reiniciar carrera'}
+ }
+};
+const originalRenderCareerTab=renderCareerTab;
+renderCareerTab=function(tab){return tab==='activities'?renderCareerActivities():originalRenderCareerTab(tab)};
+const originalRenderCareer=renderCareer;
+renderCareer=function(){
+ originalRenderCareer();
+ const nav=$('careerRoot')?.querySelector('.career-tabs');
+ if(!nav||!career)return;
+ nav.insertAdjacentHTML('beforeend',`<button class="career-tab${career.tab==='activities'?' active':''}" type="button" data-career-tab="activities">Actividades</button>`);
+};
+function updateActivityField(field,value){
+ if(!career)return false;
+ const a=activityData();
+ if(field==='duration'){
+  const minutes=Number(value);
+  if(![10,20,45,90].includes(minutes)||career.activeMatch&&career.activeMatch.status!=='FT'){toast('La duración solo se cambia antes de iniciar el próximo partido.');return true}
+  a.durationMinutes=minutes;
+  persist(true);
+  renderCareer();
+  return true;
+ }
+ return false;
+}
+const originalApplyFormationOrTactic=applyFormationOrTactic;
+applyFormationOrTactic=function(field,value){if(updateActivityField(field,value))return;originalApplyFormationOrTactic(field,value)};
+const originalKickOff=kickOff;
+kickOff=function(c){const a=activityData();if(a.dismissed){toast('La directiva rescindió tu contrato; esta carrera terminó.');return}a.activeMatchDuration=a.durationMinutes;originalKickOff(c)};
+tickMinute=function(){
+ const m=career?.activeMatch;
+ if(!m||!m.running)return;
+ const duration=matchDuration(m),half=Math.floor(duration/2);
+ m.minute=Math.min(duration,m.minute+1);
+ minuteEngine(m);
+ if(m.minute===half){
+  m.status='HT';m.running=false;stopTimer();addEvent(m,half,'Descanso. Puedes cambiar táctica y hacer sustituciones.','Relato');persist(true);renderCareer();return;
+ }
+ if(m.minute>=duration){finishMatch(m);return}
+ persist(true);
+ const clock=$('matchClock');if(clock)clock.textContent=`${h(m.minute)}' · EN JUEGO`;
+ const score=document.querySelector('.match-score');if(score)score.textContent=`${h(m.goals.home)} : ${h(m.goals.away)}`;
+ const log=$('matchLog');if(log)log.innerHTML=renderLogs(m);
+};
+const originalAddEvent=addEvent;
+addEvent=function(m,minute,text,speaker='Relato',speak=true){const adjusted=m?.status==='FT'&&text==='Final del partido. El marcador, la tabla y el historial se guardaron.'?m.minute:minute;originalAddEvent(m,adjusted,text,speaker,speak)};
+const originalFinishMatch=finishMatch;
+finishMatch=function(m){
+ const completed=originalFinishMatch(m);
+ if(!completed||career.friendlyMode)return completed;
+ const a=activityData(),last=career.history[career.history.length-1];
+ if(!last)return completed;
+ const won=last.userGoals>last.oppGoals,draw=last.userGoals===last.oppGoals;
+ a.morale=clamp(a.morale+(won?6:draw?2:-6),0,100);a.fanApproval=clamp(a.fanApproval+(won?4:draw?1:-4),0,100);
+ a.boardConfidence=clamp(a.boardConfidence+(won?4:draw?1:-5),0,100);
+ recordCareerActivity('Informe del partido',`${won?'Victoria':draw?'Empate':'Derrota'}: moral ${a.morale}/100; confianza de la directiva ${a.boardConfidence}/100.`);
+ if(career.matchday>0&&career.matchday%5===0&&career.matchday>a.lastBoardReviewMatchday){
+  const start=career.matchday-5,block=career.history.filter(x=>typeof x.matchday==='number'&&x.matchday>start&&x.matchday<=career.matchday),earned=activityMatchPoints(block),met=earned>=7;
+  a.boardConfidence=clamp(a.boardConfidence+(met?8:-12),0,100);a.lastBoardReviewMatchday=career.matchday;
+  recordCareerActivity('Reunión de directiva',`Objetivo ${met?'cumplido':'incumplido'}: ${earned} de 15 puntos en cinco jornadas. Confianza ${a.boardConfidence}/100.`);
+  if(!a.boardConfidence){a.dismissed=true;recordCareerActivity('Fin de contrato','La directiva rescindió el contrato por incumplir los objetivos y perder su confianza.')}
+ }
+ if(career.matchday>=5&&!a.nationalRole&&!a.nationalOfferResolved)recordCareerActivity('Oferta de selección','Una selección nacional te ofrece un puesto de doble cargo; revisa Actividades.');
+ persist(true);renderCareer();return completed;
+};
+function performCareerActivity(action){
+ if(!career)return;
+ const a=activityData();
+ if(a.dismissed){toast('Esta carrera terminó tras la rescisión del contrato.');return}
+ if(career.activeMatch&&career.activeMatch.status!=='FT'){toast('Pausa o termina el partido antes de gestionar actividades.');return}
+ if(action.startsWith('press-')){
+  if(a.lastPressMatchday===career.matchday){toast('Ya hiciste la rueda de prensa de esta jornada.');return}
+  const effects={'press-support':[7,2,1,'Respaldaste al vestuario.'],'press-demand':[-4,5,-3,'Exigiste resultados al grupo.'],'press-calm':[5,-1,2,'Quitaste presión al equipo.']},effect=effects[action];
+  if(!effect)return;
+  a.morale=clamp(a.morale+effect[0],0,100);a.boardConfidence=clamp(a.boardConfidence+effect[1],0,100);a.fanApproval=clamp(a.fanApproval+effect[2],0,100);a.lastPressMatchday=career.matchday;recordCareerActivity('Rueda de prensa',`${effect[3]} Moral ${a.morale}/100; confianza ${a.boardConfidence}/100; afición ${a.fanApproval}/100.`);
+ }else if(action==='sponsor'){
+  if(a.lastSponsorMatchday===career.matchday){toast('Ya aceptaste una oferta de patrocinio esta jornada.');return}
+  career.budget+=150000;a.morale=clamp(a.morale-2,0,100);a.fanApproval=clamp(a.fanApproval+2,0,100);a.lastSponsorMatchday=career.matchday;recordCareerActivity('Patrocinio personal','Ingresaron 150.000 CR; la atención mediática restó 2 puntos de moral.');
+ }else if(action==='interview'){
+  if(career.matchday-a.lastInterviewMatchday<3){toast('La próxima entrevista estará disponible dentro de tres jornadas.');return}
+  career.budget+=80000;a.morale=clamp(a.morale-5,0,100);a.fanApproval=clamp(a.fanApproval+3,0,100);a.lastInterviewMatchday=career.matchday;recordCareerActivity('Entrevista exclusiva','Ingresaron 80.000 CR; la agenda de medios restó 5 puntos de moral.');
+ }else if(action==='national-accept'||action==='national-decline'){
+  if(career.matchday<5||a.nationalRole||a.nationalOfferResolved){toast('No hay una oferta de selección disponible.');return}
+  a.nationalOfferResolved=true;a.nationalRole=action==='national-accept';a.boardConfidence=clamp(a.boardConfidence+(a.nationalRole?2:0),0,100);a.morale=clamp(a.morale+(a.nationalRole?-3:1),0,100);recordCareerActivity('Oferta de selección',a.nationalRole?'Aceptaste el doble cargo; tu agenda será más exigente.':'Rechazaste la oferta y mantienes el foco en el club.');
+ }else if(action==='hire-medical'){
+  if(a.medicalLevel>=3){toast('El servicio médico ya está en su nivel máximo.');return}
+  const cost=a.medicalLevel===1?160000:300000;
+  if(career.budget<cost){toast('Presupuesto insuficiente para contratar al especialista.');return}
+  career.budget-=cost;a.medicalLevel++;
+  for(const injury of Object.values(career.injuries))injury.days=Math.max(1,Math.ceil(injury.days*.75));
+  recordCareerActivity('Servicio médico',`Contrataste especialistas de nivel ${a.medicalLevel}; las lesiones activas se redujeron y la recuperación mejoró.`);
+ }else{return}
+ persist(true);renderCareer();toast('Actividad guardada en la carrera.');
+}
+const originalHandleGlobalAction=handleGlobalAction;
+handleGlobalAction=function(e){
+ const button=e.target.closest('[data-action]');
+ if(button&&['press-support','press-demand','press-calm','sponsor','interview','national-accept','national-decline','hire-medical'].includes(button.dataset.action)){performCareerActivity(button.dataset.action);return}
+ originalHandleGlobalAction(e);
+};
+const originalRecoverDays=recoverDays;
+recoverDays=function(days){
+ originalRecoverDays(days);
+ const level=career?.activityData?.medicalLevel||1;
+ if(level>1){
+  for(const p of career.squad)p.fitness=clamp(Number(p.fitness||90)+(level-1)*.4,45,100);
+  for(const [id,injury] of Object.entries(career.injuries)){injury.days=Math.max(0,injury.days-(level-1));if(!injury.days)delete career.injuries[id]}
+ }
+};
+const originalApplyPlayingCost=applyPlayingCost;
+applyPlayingCost=function(m){
+ originalApplyPlayingCost(m);
+ if(!activityData().nationalRole)return;
+ const team=m.teams[m.userSide];
+ for(const id of team.lineup){const player=team.squad.find(p=>p.id===id);if(player)player.fitness=clamp(player.fitness-.025,35,100)}
+};
+const originalShotChance=shotChance;
+shotChance=function(m,side,shooter){
+ const chance=originalShotChance(m,side,shooter);
+ const a=activityData();
+ if(side===m.userSide)return clamp(chance+(a.morale-50)/1400-(100-a.boardConfidence)/2600-(a.nationalRole?0.012:0),.13,.49);
+ return chance;
+};
+const originalUpdateAI=updateAI;
+updateAI=function(m,dt){
+ originalUpdateAI(m,dt);
+ if(!m.pitch)return;
+ const owner=m.pitch.players.find(p=>p.id===m.pitch.ball.ownerId);
+ if(!owner)return;
+ const defending=owner.team==='home'?'away':'home',ball=m.pitch.ball;
+ const defenders=m.pitch.players.filter(p=>p.team===defending&&p.position==='DEF');
+ if(defenders.length){
+  const lineX=defenders.reduce((sum,p)=>sum+p.targetX,0)/defenders.length;
+  for(const p of defenders){
+   if(p.id===m.pitch.pressId||p.id===m.pitch.coverId)continue;
+   const lane=p.baseY<50?-1:1;
+   p.targetX=clamp(p.targetX*.78+lineX*.22,8,92);
+   p.targetY=clamp(p.baseY+(ball.y-p.baseY)*.1+lane*.5,7,93);
+   const correction=clamp(dt/1000,.01,.06);
+   p.x+=(p.targetX-p.x)*correction;
+   p.y+=(p.targetY-p.y)*correction;
+  }
+ }
+ const midfielders=m.pitch.players.filter(p=>p.team===defending&&p.position==='MED'&&p.id!==m.pitch.pressId&&p.id!==m.pitch.coverId);
+ for(const p of midfielders){
+  const lane=p.baseY<50?-1:1,compactY=50+(ball.y-50)*.72+lane*5;
+  p.targetY=clamp(p.targetY*.75+compactY*.25,8,92);
+  const correction=clamp(dt/1000,.01,.06);
+  p.y+=(p.targetY-p.y)*correction;
+ }
+};
+const originalMinuteEngine=minuteEngine;
+minuteEngine=function(m){
+ const eventCount=m.events.length;
+ originalMinuteEngine(m);
+ if(m.events.length!==eventCount||randomMatch(m)>.28)return;
+ const side=m.pitch.possession||'home',other=side==='home'?'away':'home',receiver=playerForSide(m,side,'MED');
+ if(randomMatch(m)<.24){setBallOwner(m,other);addEvent(m,m.minute,'Recuperación en bloque y transición rápida.','Análisis',false)}
+ else if(receiver){m.pitch.ball.ownerId=receiver.id;addEvent(m,m.minute,`${receiver.name} encuentra una línea de pase y acelera la circulación.`,'Análisis',false)}
+};
+const originalPlayerCard=playerCard;
+playerCard=function(p){
+ const markup=originalPlayerCard(p),stats=p.stats||{},fitness=clamp(Number(p.fitness??90),0,100),effective=Math.round(p.ovr*(.7+.3*fitness/100));
+ const ratings=[['RIT',stats.velocidad],['TIR',Math.round((stats.tiro+stats.ataque)/2)],['PAS',Math.round((stats.pase+stats.vision)/2)],['REG',stats.regate],['DEF',Math.round((stats.defensa+stats.entrada+stats.anticipacion)/3)],['FIS',Math.round((stats.fuerza+stats.resistencia)/2)]];
+ const panel=`<div class="player-meta rating-profile">GRL efectivo por forma: <strong>${h(effective)}</strong> · Estilos de juego: ${h(traitText[p.trait]||'Versátil')}</div><div class="rating-groups">${ratings.map(([label,value])=>`<div><span>${label}</span><b>${h(value)}</b></div>`).join('')}</div>`;
+ return markup.replace('</details></article>',`</details>${panel}</article>`);
+};
+const originalNewMarketMatch=newMarketMatch;
+newMarketMatch=function(){if(activityData().dismissed){toast('La directiva rescindió tu contrato; esta carrera terminó.');return}originalNewMarketMatch()};
+const originalRenderMatchSummary=renderMatchSummary;
+renderMatchSummary=function(m){const markup=originalRenderMatchSummary(m);return markup?markup.replace('</p><p class="career-intro">',`</p><p class="career-intro">Duración configurada: ${h(matchDuration(m))} minutos simulados.</p><p class="career-intro">`):markup};
 })();
