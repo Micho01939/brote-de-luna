@@ -6,6 +6,8 @@ Cancha Libre es un mánager de fútbol para navegador. El catálogo incluye 82 c
 
 Desde la raíz del proyecto, ejecuta `python3 -m http.server 8000 --directory public` y abre `http://localhost:8000`. No requiere cuenta ni pago.
 
+Las ligas completas se juegan a ida y vuelta con calendario de temporada. En cada jornada se disputa el partido del usuario y se simulan los demás resultados; el calendario, la clasificación y los marcadores se guardan en la carrera. Las divisiones parciales mantienen el modo amistoso sin tabla.
+
 ## Qué incluye
 
 Gestión de plantilla y mercado; ligas jugables de Primera, Segunda y Primera Federación (grupos I y II), cada una con su propia clasificación; nombres y dorsales oficiales en las plantillas de Primera y plantillas generadas para los clubes de categorías inferiores; GRL de club y jugador; atributos de ataque, velocidad, pase, regate, defensa, entrada, resistencia, fuerza, tiro, portería, anticipación y visión; partidos 2D con jugadores circulares identificados por dorsal y posición, IA táctica que ajusta presión, coberturas, líneas defensivas y desmarques a atributos y enfoque; reloj ajustable acompasado al movimiento de cancha; marcador fijo con equipos, goles y minuto; faltas, tiros libres directos, córners, lesiones y otros eventos; cambios animados y celebraciones con colores del equipo; guardado local y respaldo JSON. El comentario de voz es sintético y opcional: se puede silenciar y mantiene subtítulos en pantalla.
