@@ -12,6 +12,19 @@ Temporada 2026/27: este inventario de fuentes documenta **721 participaciones en
 
 Los rótulos de enlace son genéricos. Se conservan enlaces originales solo cuando aportan evidencia puntual necesaria; los enlaces no establecen relaciones entre identidades ni aliases. La cobertura puede ser general o referirse a partidos concretos, según se indica en cada sección.
 
+## Recursos gráficos externos
+
+Estos sitios pueden servir como referencia para localizar escudos PNG/SVG y kits gráficos; no son fuentes de assets integrados en el juego. La disponibilidad pública, la descarga gratuita o la etiqueta “open source” no garantizan por sí solas permiso de uso: cada archivo puede tener condiciones propias. Comprueba la licencia, atribución, marcas registradas y permiso de redistribución antes de incorporar o compartir un asset.
+
+- [FootyLogos](https://footylogos.net/) — archivo comunitario de logotipos de fútbol en varios formatos y resoluciones.
+- [Paladar Negro · Escudoteca PN](https://paladarnegro.net/escudoteca/) — biblioteca especializada en escudos de fútbol.
+- [Wikimedia Commons · SVG association football logos](https://commons.wikimedia.org/wiki/Category:SVG_association_football_logos) — vectores con ficha de licencia y atribución por archivo.
+- [Sortitoutsi · Standard Logos](https://sortitoutsi.net/graphics/style/1/standard-logos) — paquete gráfico para Football Manager; consulta sus condiciones de descarga y uso.
+- [FM Scout](https://www.fmscout.com/) — archivos y recursos publicados por su comunidad.
+- [Football Kit Archive](https://www.footballkitarchive.com/) — archivo comunitario de equipaciones y referencias visuales.
+
+El juego busca automáticamente `public/assets/logos/<ID-del-club>.png` y luego `.svg`. La importación y el editor guardan la imagen asociada al ID en IndexedDB local; no se envía al servidor ni se adjunta al respaldo de carreras.
+
 ## España
 
 ### Primera División — España · nivel 1

@@ -11,7 +11,9 @@
 <script defer src="spain-divisions.js"></script>
 <script defer src="spain-mode.js"></script>
 <script defer src="spain-rosters.js"></script>
+<script defer src="graphics.js"></script>
 <script defer src="app.js"></script>
+<link rel="stylesheet" href="graphics.css">
 <title>Cancha Libre — Mánager de fútbol español</title>
 </head>
 <body>
@@ -40,7 +42,7 @@
   <nav class="view-tabs" aria-label="Secciones del juego">
     <button class="view-tab active" type="button" data-view="clubs" aria-current="page">Clubes</button>
     <button class="view-tab" type="button" data-view="career">Mi carrera</button>
-    <button class="view-tab" type="button" data-view="evidence">Fuentes y ficción</button>
+    <button class="view-tab" type="button" data-view="evidence">Fuentes y escudos</button>
   </nav>
 
   <section class="screen" id="view-clubs" aria-labelledby="clubsHeading">
@@ -63,6 +65,7 @@
       </div>
       <aside id="clubPanel" class="panel-card club-panel" aria-labelledby="clubPanelTitle">
         <div id="clubPanelContent"></div>
+        <button id="graphicsFromClub" class="secondary-button graphics-action" type="button" disabled>Personalizar escudo</button>
       </aside>
     </div>
   </section>
@@ -77,6 +80,16 @@
       <h2 id="evidenceHeading">Datos de las competiciones</h2>
       <p>Los clubes y competiciones de España 2026/27 se basan en fuentes oficiales documentadas en SOURCES.md. Las plantillas generadas, escudos originales y GRL estimados son contenido del juego, que no está afiliado a LaLiga ni a la RFEF.</p>
     </div>
+    <section class="panel-card graphics-resources">
+      <div class="section-heading"><div><div class="eyebrow">Recursos gráficos · PNG / SVG</div><h2>Fuentes de escudos y kits</h2></div></div>
+      <p class="graphics-intro">Referencias para encontrar escudos de clubes, selecciones y torneos. Revisa la licencia, atribución y condiciones de cada archivo antes de usarlo o distribuirlo; un recurso público no es necesariamente de libre uso.</p>
+      <div id="graphicsSources" class="evidence-grid"></div>
+    </section>
+    <section class="panel-card graphics-editor">
+      <div class="section-heading"><div><div class="eyebrow">Custom Graphics Engine</div><h2>Importar o crear un escudo</h2></div></div>
+      <p class="graphics-intro">Los archivos se asocian al ID único del club y se guardan en este navegador. Para incluirlos en una instalación, también puedes colocar un archivo en <code>public/assets/logos/&lt;ID&gt;.png</code> o <code>.svg</code>.</p>
+      <div id="graphicsEditor"></div>
+    </section>
     <div id="evidenceList" class="evidence-grid"></div>
     <div class="panel-card gaps-card"><h3>Límites de la evidencia</h3><ul id="evidenceGaps"></ul></div>
   </section>
