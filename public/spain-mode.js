@@ -2,27 +2,35 @@
   'use strict';
 
   const data = window.CANCHA_DATA;
-  if (!data) throw new Error('No se pudo cargar el modo de LaLiga.');
+  if (!data) throw new Error('No se pudo cargar el modo de fútbol español.');
 
-  const competition = data.competitions.find(item => item.countryId === 'es' && item.tier === 1);
-  const clubs = competition && data.clubs.filter(item => item.competitionId === competition.id);
-  if (!competition || !clubs || clubs.length !== 20) {
-    throw new Error('El catálogo no contiene los 20 equipos esperados de LaLiga.');
+  const primary = data.competitions.find(item => item.countryId === 'es' && item.tier === 1);
+  const clubById = new Map(data.clubs.map(club => [club.id, club]));
+  const competitionById = new Map(data.competitions.map(competition => [competition.id, competition]));
+  if (!primary || data.clubs.filter(club => club.competitionId === primary.id).length !== 20) {
+    throw new Error('El catálogo no contiene los 20 equipos esperados de Primera División.');
   }
 
-  const teamById = new Map(clubs.map(club => [club.id, club]));
-  const text = (element, value) => {
+  const setText = (element, value) => {
     if (element && element.textContent !== value) element.textContent = value;
   };
+  const officialRosterCount = club => window.CANCHA_ROSTERS?.[club.code]?.length || 0;
 
   function decorate() {
-    document.title = 'Cancha Libre — Mánager de LaLiga';
-    text(document.getElementById('statParticipations'), '20');
-    text(document.getElementById('statComps'), '2D');
+    document.title = 'Cancha Libre — Mánager de fútbol español';
+    setText(document.querySelector('.brand-copy small'), 'FÚTBOL ESPAÑOL · 2026/27');
+    setText(document.querySelector('.hero .eyebrow'), 'Fútbol español · Temporada 2026/27');
+    setText(document.querySelector('.hero-copy p'), 'Elige entre Primera División, Segunda División o Primera Federación. Gestiona tu plantilla con GRL y atributos, y vive partidos tácticos 2D.');
+    setText(document.querySelector('#statParticipations')?.nextElementSibling, 'clubes jugables');
+    setText(document.querySelector('#statComps')?.nextElementSibling, 'competiciones');
+    setText(document.getElementById('statParticipations'), String(data.clubs.length));
+    setText(document.getElementById('statComps'), String(data.competitions.length));
+
     document.querySelectorAll('.club-card[data-club]').forEach(card => {
-      const club = teamById.get(card.dataset.club);
+      const club = clubById.get(card.dataset.club);
       if (!club) return;
-      text(card.querySelector('.club-place'), club.city);
+      card.dataset.tier = String(club.tier);
+      setText(card.querySelector('.club-place'), club.city);
       const code = card.querySelector('.club-code');
       if (code && !card.querySelector('.club-rating')) {
         const rating = document.createElement('span');
@@ -31,36 +39,59 @@
         code.insertAdjacentElement('afterend', rating);
       }
     });
-    const results = document.getElementById('clubResults');
-    if (results) text(results, results.textContent.replace(/participaciones?/g, match => match === 'participación' ? 'equipo' : 'equipos'));
-    document.querySelectorAll('.league-meta').forEach(meta => {
-      text(meta, meta.textContent.replace(/participaciones?/g, match => match === 'participación' ? 'equipo' : 'equipos'));
+
+    document.querySelectorAll('.league-block').forEach(block => {
+      const club = clubById.get(block.querySelector('[data-club]')?.dataset.club);
+      const competition = club && competitionById.get(club.competitionId);
+      if (!competition) return;
+      block.dataset.tier = String(competition.tier);
+      const meta = block.querySelector('.league-meta');
+      if (meta) setText(meta, `${competition.country} · ${competition.tierLabel || `Nivel ${competition.tier}`} · ${competition.clubCount} clubes`);
+      setText(block.querySelector('.coverage-pill'), 'Clubes reales · escudos originales');
+      setText(block.querySelector('.partial-pill'), 'Plantillas generadas');
     });
 
+    const results = document.getElementById('clubResults');
+    if (results) setText(results, results.textContent.replace(/participaciones?/g, match => match.endsWith('es') ? 'clubes' : 'club'));
+
     const selected = document.querySelector('.club-card.selected');
-    const selectedClub = selected && teamById.get(selected.dataset.club);
+    const club = selected && clubById.get(selected.dataset.club);
     const profile = document.querySelector('.club-panel');
-    if (selectedClub && profile) {
-      text(profile.querySelector('.profile-sub'), `${selectedClub.city} · España`);
-      text(profile.querySelector('.profile-text'), 'Nombres, dorsales, posiciones y edades de la plantilla oficial de LaLiga 2026/27. El GRL y los atributos son estimaciones del juego, no valoraciones oficiales.');
+    if (club && profile) {
+      const competition = competitionById.get(club.competitionId);
+      const officialCount = officialRosterCount(club);
+      profile.dataset.tier = String(club.tier);
+      setText(profile.querySelector('.profile-sub'), `${club.city} · España`);
+      setText(profile.querySelector('.profile-text'), officialCount
+        ? `Club real de ${club.league}. Nombres, dorsales, posiciones y edades de la plantilla oficial de LaLiga 2026/27; GRL y atributos son estimaciones del juego.`
+        : 'Club participante de la temporada 2026/27. El escudo es original y los jugadores, nombres, GRL y atributos se generan para Cancha Libre.');
       const title = profile.querySelector('.club-profile-title');
       if (title && !title.querySelector('.club-overall')) {
         const rating = document.createElement('span');
         rating.className = 'club-overall';
-        rating.textContent = `${selectedClub.overall} GRL DE CLUB`;
+        rating.textContent = `${club.overall} GRL DE CLUB`;
         title.append(rating);
       }
       profile.querySelectorAll('.fact-box').forEach(box => {
         const label = box.querySelector('span')?.textContent;
-        if (label === 'Competencia') text(box.querySelector('strong'), 'LaLiga 2026/27');
-        if (label === 'Plantilla') text(box.querySelector('strong'), '25 jugadores oficiales');
+        if (label === 'Competencia') setText(box.querySelector('strong'), `${competition.title} · ${competition.group}`);
+        if (label === 'Plantilla') setText(box.querySelector('strong'), officialCount ? `${officialCount} jugadores oficiales` : '18 jugadores generados');
       });
+      setText(profile.querySelector('.profile-badge'), `${competition.title}${competition.group === 'Nacional' ? '' : ` · ${competition.group}`}`);
     }
 
-    document.querySelectorAll('.coverage-pill').forEach(pill => text(pill, 'LaLiga EA Sports'));
     document.querySelectorAll('.squad-toolbar h3').forEach(heading => {
-      text(heading, heading.textContent.replace('Plantilla ficticia', 'Plantilla oficial'));
+      const officialCount = careerClubRosterCount();
+      setText(heading, officialCount
+        ? heading.textContent.replace('Plantilla ficticia', 'Plantilla oficial')
+        : heading.textContent.replace('Plantilla ficticia', 'Plantilla generada'));
     });
+  }
+
+  function careerClubRosterCount() {
+    const heading = document.getElementById('careerHeading');
+    const career = heading && [...clubById.values()].find(club => club.name === heading.textContent);
+    return career ? officialRosterCount(career) : 0;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -77,16 +108,12 @@
       countryFilter.value = 'es';
       countryFilter.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    if (leagueFilter && leagueFilter.value !== competition.id) {
-      leagueFilter.value = competition.id;
+    if (leagueFilter && leagueFilter.value !== primary.id) {
+      leagueFilter.value = primary.id;
       leagueFilter.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    countryFilter?.closest('label')?.setAttribute('hidden', '');
-    leagueFilter?.closest('label')?.setAttribute('hidden', '');
-    document.querySelector('.filters')?.classList.add('spain-filtered');
-    document.querySelector('[data-view="evidence"]')?.setAttribute('hidden', '');
     const search = document.getElementById('searchInput');
-    if (search) search.placeholder = 'Buscar equipo de LaLiga';
+    if (search) search.placeholder = 'Buscar club, grupo o división';
     requestAnimationFrame(() => {
       const firstClub = list?.querySelector('.club-card');
       if (firstClub) firstClub.click();

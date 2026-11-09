@@ -1,6 +1,6 @@
 # Fuentes de cobertura y listas de participantes — Cancha Libre
 
-Temporada 2026/27: este inventario de fuentes documenta **721 participaciones en 44 divisiones/grupos**. El catálogo jugable se limita a los 20 participantes de LaLiga EA Sports 2026/27 y usa escudos geométricos originales. Las demás listas de este inventario respaldan la cobertura documentada, no equipos disponibles en el juego. Algunas crónicas mencionan clubes reales como evidencia puntual y no establecen equivalencias con clubes ficticios.
+Temporada 2026/27: este inventario de fuentes documenta **721 participaciones en 44 divisiones/grupos**. El catálogo jugable de España incluye 82 participantes de Primera División, Segunda División y Primera Federación (grupos I y II), con escudos geométricos originales. Las demás listas de este inventario respaldan la cobertura documentada, no equipos disponibles en el juego. Algunas crónicas mencionan clubes reales como evidencia puntual y no establecen equivalencias con clubes ficticios.
 
 ## Criterio aplicado
 
@@ -53,6 +53,7 @@ Datos consultados el **8 de noviembre de 2026** en las páginas oficiales de pla
 ### Segunda División — España · nivel 2
 
 - **Temporada y lista de participantes:** 2026/27; 22 participaciones según la lista de grupo.
+- **Clubes incluidos en el juego:** AD Ceuta FC, Albacete BP, Burgos CF, Cádiz CF, CD Castellón, CD Eldense, CD Leganés, CD Tenerife, CE Sabadell, Celta Fortuna, Córdoba CF, FC Andorra, Girona FC, Granada CF, Real Sociedad B, RCD Mallorca, Real Oviedo, Real Sporting, Real Valladolid CF, SD Eibar, UD Almería y UD Las Palmas.
 - **Fecha de evidencia:** evidencia de temporada 2026/27; fecha puntual no consignada en el ledger.
 - **Criterio de cobertura:** Cobertura recurrente, jornada a jornada; evidencia pública de TV, radio o redes asociada a esta división.
 - **Cobertura:**
@@ -60,10 +61,12 @@ Datos consultados el **8 de noviembre de 2026** en las páginas oficiales de pla
 - [Evidencia pública 2](https://www.laliga.com/noticias/horarios-de-la-primera-jornada-de-laliga-hypermotion-2026-27)
 - **Fuentes de participantes / calendario:**
 - [Fuente oficial 1](https://www.laliga.com/laliga-hypermotion/clubes)
+- **Plantillas:** los clubes participantes son reales; los jugadores de esta división se generan para Cancha Libre y no representan plantillas oficiales.
 
 ### Primera Federación — grupo I
 
 - **Temporada y lista de participantes:** 2026/27; 20 participaciones según la lista de grupo.
+- **Clubes incluidos en el juego:** AD Mérida, Arenas Club, Athletic Club B, Barakaldo CF, CD Coria, CD Extremadura, CD Lugo, CD Mirandés, CP Cacereño, Cultural y Deportiva Leonesa, Pontevedra CF, Racing Club Ferrol, RC Deportivo Fabril, Real Avilés Industrial, Real Unión Club, SD Ponferradina, UD Logroñés, UD Ourense, Unionistas de Salamanca CF y Zamora CF.
 - **Fecha de evidencia:** evidencia de temporada 2026/27; fecha puntual no consignada en el ledger.
 - **Criterio de cobertura:** Jornadas completas en algunas plataformas; selección en otras; evidencia pública de TV, radio o redes asociada a esta división.
 - **Cobertura:**
@@ -72,10 +75,12 @@ Datos consultados el **8 de noviembre de 2026** en las páginas oficiales de pla
 - [Fuente oficial 1](https://rfef.es/es/noticias/aprobados-los-grupos-de-primera-federacion-para-la-temporada-202627)
 - [Fuente oficial 2](https://rfef.es/es/noticias/calendarios-completos-primera-federacion-temporada-202627)
 - [Fuente oficial 3](https://rfef.es/sites/default/files/2026-06/Primera_Federacion_Grupo_I.pdf)
+- **Plantillas:** los clubes participantes son reales; los jugadores de esta división se generan para Cancha Libre y no representan plantillas oficiales.
 
 ### Primera Federación — grupo II
 
 - **Temporada y lista de participantes:** 2026/27; 20 participaciones según la lista de grupo.
+- **Clubes incluidos en el juego:** AD Alcorcón, Águilas FC, Algeciras CF, Antequera CCF, Atlético Madrileño, CD Teruel, CE Europa, CF Rayo Majadahonda, FC Cartagena, Gimnàstic de Tarragona, Hércules de Alicante CF, Juventud de Torremolinos CF, Real Jaén CF, Real Madrid Castilla, Real Murcia CF, Real Zaragoza, SD Huesca, UD Ibiza, UE Sant Andreu y Villarreal CF B.
 - **Fecha de evidencia:** evidencia de temporada 2026/27; fecha puntual no consignada en el ledger.
 - **Criterio de cobertura:** Jornadas completas en algunas plataformas; selección en otras; evidencia pública de TV, radio o redes asociada a esta división.
 - **Cobertura:**
@@ -84,6 +89,7 @@ Datos consultados el **8 de noviembre de 2026** en las páginas oficiales de pla
 - [Fuente oficial 1](https://rfef.es/es/noticias/aprobados-los-grupos-de-primera-federacion-para-la-temporada-202627)
 - [Fuente oficial 2](https://rfef.es/es/noticias/calendarios-completos-primera-federacion-temporada-202627)
 - [Fuente oficial 3](https://rfef.es/sites/default/files/2026-06/Primera_Federacion_Grupo_II.pdf)
+- **Plantillas:** los clubes participantes son reales; los jugadores de esta división se generan para Cancha Libre y no representan plantillas oficiales.
 
 ### Segunda Federación — grupo IV
 
