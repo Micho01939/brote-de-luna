@@ -17,10 +17,9 @@
   const officialRosterCount = club => window.CANCHA_ROSTERS?.[club.code]?.length || 0;
 
   function decorate() {
-    document.title = 'Cancha Libre — Mánager de fútbol español';
-    setText(document.querySelector('.brand-copy small'), 'FÚTBOL ESPAÑOL · 2026/27');
-    setText(document.querySelector('.hero .eyebrow'), 'Fútbol español · Temporada 2026/27');
-    setText(document.querySelector('.hero-copy p'), 'Elige entre Primera División, Segunda División o Primera Federación. Gestiona tu plantilla con GRL y atributos, y vive partidos tácticos 2D.');
+    document.title = 'Cancha Libre FC 27 — Modo Mánager';
+    setText(document.querySelector('.brand-copy small'), 'MODO MÁNAGER · TEMPORADA 2026/27');
+    setText(document.querySelector('.hero .eyebrow'), 'EA SPORTS FC 27 STYLE · MODO CARRERA DE MÁNAGER');
     setText(document.querySelector('#statParticipations')?.nextElementSibling, 'clubes jugables');
     setText(document.querySelector('#statComps')?.nextElementSibling, 'competiciones');
     setText(document.getElementById('statParticipations'), String(data.clubs.length));
@@ -59,12 +58,8 @@
     const profile = document.querySelector('.club-panel');
     if (club && profile) {
       const competition = competitionById.get(club.competitionId);
-      const officialCount = officialRosterCount(club);
       profile.dataset.tier = String(club.tier);
-      setText(profile.querySelector('.profile-sub'), `${club.city} · España`);
-      setText(profile.querySelector('.profile-text'), officialCount
-        ? `Club real de ${club.league}. Nombres, dorsales, posiciones y edades de la plantilla oficial de LaLiga 2026/27; GRL y atributos son estimaciones del juego.`
-        : 'Club participante de la temporada 2026/27. El escudo es original y los jugadores, nombres, GRL y atributos se generan para Cancha Libre.');
+      setText(profile.querySelector('.profile-sub'), `${club.city} · ${club.country || 'España'}`);
       const title = profile.querySelector('.club-profile-title');
       if (title && !title.querySelector('.club-overall')) {
         const rating = document.createElement('span');
@@ -72,26 +67,8 @@
         rating.textContent = `${club.overall} GRL DE CLUB`;
         title.append(rating);
       }
-      profile.querySelectorAll('.fact-box').forEach(box => {
-        const label = box.querySelector('span')?.textContent;
-        if (label === 'Competencia') setText(box.querySelector('strong'), `${competition.title} · ${competition.group}`);
-        if (label === 'Plantilla') setText(box.querySelector('strong'), officialCount ? `${officialCount} jugadores oficiales` : '18 jugadores generados');
-      });
       setText(profile.querySelector('.profile-badge'), `${competition.title}${competition.group === 'Nacional' ? '' : ` · ${competition.group}`}`);
     }
-
-    document.querySelectorAll('.squad-toolbar h3').forEach(heading => {
-      const officialCount = careerClubRosterCount();
-      setText(heading, officialCount
-        ? heading.textContent.replace('Plantilla ficticia', 'Plantilla oficial')
-        : heading.textContent.replace('Plantilla ficticia', 'Plantilla generada'));
-    });
-  }
-
-  function careerClubRosterCount() {
-    const heading = document.getElementById('careerHeading');
-    const career = heading && [...clubById.values()].find(club => club.name === heading.textContent);
-    return career ? officialRosterCount(career) : 0;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -104,16 +81,16 @@
     roots.forEach(root => observer.observe(root, { childList: true, subtree: true }));
     decorate();
 
-    if (countryFilter && countryFilter.value !== 'es') {
-      countryFilter.value = 'es';
+    if (countryFilter && countryFilter.value !== 'all') {
+      countryFilter.value = 'all';
       countryFilter.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    if (leagueFilter && leagueFilter.value !== primary.id) {
-      leagueFilter.value = primary.id;
+    if (leagueFilter && leagueFilter.value !== 'all') {
+      leagueFilter.value = 'all';
       leagueFilter.dispatchEvent(new Event('change', { bubbles: true }));
     }
     const search = document.getElementById('searchInput');
-    if (search) search.placeholder = 'Buscar club, grupo o división';
+    if (search) search.placeholder = 'Buscar club, ciudad, provincia o división (España / Canadá)';
     requestAnimationFrame(() => {
       const firstClub = list?.querySelector('.club-card');
       if (firstClub) firstClub.click();
